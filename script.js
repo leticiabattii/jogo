@@ -2,8 +2,8 @@ const canvas = document.getElementById('jogo2D')
 const ctx = canvas.getContext('2d')
 const gravidade = 0.5
 document.addEventListener('keypress', (e) => {
-    if (e.code == 'Space' && personagem.pulando == false) {
-        personagem.velocidadey = 15
+    if(e.code == 'Space' && personagem.pulando==false){
+        personagem.velocidadey =  15
         console.log("PULOU")
         personagem.pulando = true
     }
@@ -19,21 +19,18 @@ const personagem = {
 }
 
 function desenharPersonagem() {
-    ctx.fillStyle = '#8A2BE2' // Cor roxa vibrante
-    ctx.beginPath()
-    ctx.arc(personagem.x + personagem.largura / 2, personagem.y + personagem.altura / 2, personagem.largura / 2, 0, Math.PI * 2) // Personagem com bordas arredondadas
-    ctx.fill()
-    ctx.closePath()
+    ctx.fillStyle = 'indigo'
+    ctx.fillRect(personagem.x, personagem.y, personagem.altura, personagem.largura)
 }
 
 function atualizarPersonagem() {
-    if (personagem.pulando == true) {
+    if(personagem.pulando == true){
         personagem.velocidadey -= gravidade
         personagem.y -= personagem.velocidadey
-        if (personagem.y >= canvas.height - 50) {
+        if(personagem.y >= canvas.height-50){
             personagem.velocidadey = 0
             personagem.pulando = false
-            personagem.y = canvas.height - 50
+            personagem.y = canvas.height-50
         }
     }
 }
@@ -47,16 +44,13 @@ const obstaculo = {
 }
 
 function desenharObstaculo() {
-    ctx.fillStyle = '#FF6347' // Cor de tomate mais quente
-    ctx.beginPath()
-    ctx.arc(obstaculo.x + obstaculo.largura / 2, obstaculo.y + obstaculo.altura / 2, obstaculo.largura / 2, 0, Math.PI * 2) // Obstáculo redondo
-    ctx.fill()
-    ctx.closePath()
+    ctx.fillStyle = 'crimson'
+    ctx.fillRect(obstaculo.x, obstaculo.y, obstaculo.largura, obstaculo.altura)
 }
 
 function atualizarObstaculo() {
     obstaculo.x -= obstaculo.velocidadex
-    if (obstaculo.x <= 0 - obstaculo.largura) {
+    if(obstaculo.x <= 0 - obstaculo.largura){
         obstaculo.x = canvas.width
         obstaculo.velocidadex += 0.2
         let nova_altura = (Math.random() * 50) + 100
@@ -72,19 +66,15 @@ function verificarColisao() {
         personagem.y < obstaculo.y + obstaculo.altura &&
         personagem.y + personagem.altura > obstaculo.y
     ) {
-        return true;
+        return true; 
     }
     return false;
 }
 
 function exibirGameOver() {
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)' // Fundo escuro para destacar a mensagem
-    ctx.fillRect(0, 0, canvas.width, canvas.height) // Cobrir a tela com um fundo escuro
-    ctx.fillStyle = '#FFD700' // Texto dourado para destaque
+    ctx.fillStyle = 'black'
     ctx.font = '48px Arial'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2)
+    ctx.fillText('GAME OVER', canvas.width / 2 - 120, canvas.height / 2)
 }
 
 let jogoAtivo = true;
@@ -94,21 +84,15 @@ function loop() {
         exibirGameOver();
         return;
     }
-
-    // Fundo com gradiente animado
-    let gradiente = ctx.createLinearGradient(0, 0, 0, canvas.height)
-    gradiente.addColorStop(0, '#00BFFF') // Azul claro
-    gradiente.addColorStop(1, '#1E90FF') // Azul escuro
-    ctx.fillStyle = gradiente
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
     desenharPersonagem()
     desenharObstaculo()
     atualizarPersonagem()
     atualizarObstaculo()
-
+    
     if (verificarColisao()) {
-        jogoAtivo = false;
+        jogoAtivo = false; 
     }
 
     requestAnimationFrame(loop)
