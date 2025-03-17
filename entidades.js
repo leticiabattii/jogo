@@ -164,7 +164,7 @@ const canvas = document.getElementById('jogo2D');
 const ctx = canvas.getContext('2d');
 let gameOver = false;
 let pontuacao = 0;
-const gravidade = 0.5;
+const gravidade = 0.4;
 
 // Evento de pulo com espaço
 document.addEventListener('keypress', (e) => {
